@@ -165,10 +165,11 @@ body{
 
 #title{
   font-family:'Luckiest Guy',Impact,sans-serif;
-  font-size:clamp(42px,11vw,120px);line-height:.95;letter-spacing:2px;
-  color:var(--cream);
-  display:flex;flex-wrap:wrap;justify-content:center;
+  font-size:clamp(38px,14vw,120px);line-height:.9;letter-spacing:1px;
+  color:var(--cream);max-width:100%;
+  display:flex;flex-direction:column;align-items:center;
 }
+#title .line{display:flex;justify-content:center;white-space:nowrap}
 #title span{
   display:inline-block;opacity:0;transform:translateY(-60px) rotate(-18deg) scale(.4);
   background:linear-gradient(180deg,#FFFDF6 40%,var(--gold) 100%);
@@ -177,7 +178,6 @@ body{
   filter:drop-shadow(0 4px 0 #0E1E3F) drop-shadow(0 8px 14px rgba(0,0,0,.45));
 }
 #title span.in{animation:letterIn .6s cubic-bezier(.2,1.7,.4,1) forwards}
-#title .sp{width:.34em}
 @keyframes letterIn{to{opacity:1;transform:none}}
 
 #sub{
@@ -410,12 +410,16 @@ body{
   }
 
   /* title letters */
-  const TITLE='HAPPY BIRTHDAY!';
-  [...TITLE].forEach(ch=>{
-    const s=document.createElement('span');
-    if(ch===' '){s.className='sp';s.innerHTML='&nbsp;';}
-    else s.textContent=ch;
-    titleEl.appendChild(s);
+  const WORDS=['HAPPY','BIRTHDAY!'];
+  WORDS.forEach(word=>{
+    const line=document.createElement('div');
+    line.className='line';
+    [...word].forEach(ch=>{
+      const s=document.createElement('span');
+      s.textContent=ch;
+      line.appendChild(s);
+    });
+    titleEl.appendChild(line);
   });
   const letters=[...titleEl.querySelectorAll('span')];
 
