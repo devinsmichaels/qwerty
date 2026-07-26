@@ -158,7 +158,7 @@ body{
 /* ---------- MESSAGE ---------- */
 #message{
   position:absolute;inset:0;display:grid;place-content:center;justify-items:center;
-  padding:24px;text-align:center;gap:clamp(14px,2.5vh,26px);
+  padding:24px 24px 92px;text-align:center;gap:clamp(12px,2.2vh,24px);
   opacity:0;pointer-events:none;
 }
 .opened #message{opacity:1}
@@ -209,6 +209,32 @@ body{
 #again:hover{transform:translateY(2px);box-shadow:0 5px 0 #0E1E3F}
 #again:active{transform:translateY(7px);box-shadow:0 0 0 #0E1E3F}
 #again:focus-visible{outline:4px solid var(--pink);outline-offset:4px}
+
+/* signature */
+#signature{
+  position:absolute;left:50%;bottom:3.2vh;
+  display:flex;align-items:center;gap:14px;
+  font-family:'Luckiest Guy',Impact,sans-serif;letter-spacing:1.5px;
+  font-size:clamp(16px,3.1vw,32px);color:#FFFFFF;white-space:nowrap;
+  text-shadow:0 4px 0 #0E1E3F,0 0 22px rgba(14,30,63,.6);
+  opacity:0;transform:translate(-50%,26px);
+}
+#signature.in{animation:sigIn .8s cubic-bezier(.2,1.5,.4,1) forwards}
+@keyframes sigIn{to{opacity:1;transform:translate(-50%,0)}}
+#signature .mimi{
+  display:inline-block;font-style:normal;font-size:1.6em;line-height:.85;
+  padding:0 .05em;vertical-align:-.06em;
+  background:linear-gradient(100deg,#FF4D8D,#FF7A2F,#FFC13B,#4FB84B,#2AC9C0,#5BB6F0,#B36BFF,#FF4D8D);
+  background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent;
+  text-shadow:none;filter:drop-shadow(0 4px 0 #0E1E3F);
+  animation:rainbow 4.5s linear infinite;
+}
+@keyframes rainbow{to{background-position:300% 0}}
+#signature svg{width:1.05em;height:1.05em;flex:none;
+  filter:drop-shadow(0 3px 0 #0E1E3F);animation:beat 1.3s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}18%{transform:scale(1.22)}36%{transform:scale(1)}54%{transform:scale(1.14)}}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.2s!important}
@@ -310,7 +336,7 @@ body{
 
   <div id="message">
     <h1 id="title" aria-label="Happy Birthday!"></h1>
-    <p id="sub">Now you can play <b>Palworld</b> on your own brand new computer!</p>
+    <p id="sub">Now you can play <b>Palworld</b> on your own computer!</p>
     <svg id="pc" viewBox="0 0 200 170" role="img" aria-label="A brand new computer">
       <rect x="78" y="118" width="44" height="18" fill="#0E1E3F"/>
       <rect x="52" y="132" width="96" height="14" rx="7" fill="#0E1E3F"/>
@@ -329,6 +355,21 @@ body{
     <button id="again" type="button">Play it again</button>
   </div>
 
+  <div id="signature">
+    <span>With lots of love, from <i class="mimi">Mimi</i>!</span>
+    <svg viewBox="0 0 24 24" role="img" aria-label="heart">
+      <defs>
+        <linearGradient id="heartG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#FFE7A0"/>
+          <stop offset=".55" stop-color="#FFC13B"/>
+          <stop offset="1" stop-color="#F0960F"/>
+        </linearGradient>
+      </defs>
+      <path d="M12 21.2 3.6 12.8a5.2 5.2 0 0 1 7.4-7.3l1 1 1-1a5.2 5.2 0 1 1 7.4 7.3z"
+            fill="url(#heartG)" stroke="#0E1E3F" stroke-width="1.6" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
   <div id="flash"></div>
 </div>
 
@@ -339,6 +380,7 @@ body{
   const titleEl=document.getElementById('title');
   const sub=document.getElementById('sub');
   const pc=document.getElementById('pc');
+  const sig=document.getElementById('signature');
   const again=document.getElementById('again');
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let opened=false,timers=[];
@@ -458,6 +500,7 @@ body{
     },1180);
     T(()=>{sub.classList.add('in');burst(90);},2150);
     T(()=>{pc.classList.add('in');},2600);
+    T(()=>{sig.classList.add('in');},3150);
     T(()=>rain(70),3000);
     T(()=>rain(60),5200);
   }
@@ -468,7 +511,7 @@ body{
     ctx.clearRect(0,0,innerWidth,innerHeight);
     stage.classList.remove('opened','day','shaking');
     letters.forEach(l=>l.classList.remove('in'));
-    sub.classList.remove('in');pc.classList.remove('in');
+    sub.classList.remove('in');pc.classList.remove('in');sig.classList.remove('in');
     capsule.style.animation='none';void capsule.offsetWidth;capsule.style.animation='';
   }
 
